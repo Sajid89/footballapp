@@ -11,13 +11,26 @@ const userValidationRules = require('../validators/validationRules');
 
 const authMiddleware = require('../utils/middlewares/authMiddleware');
 const jwt = require('jsonwebtoken');
+const onboardingController = require('../controllers/onboardingController');
 
 
 // Register route
-router.post('/register', userValidationRules.register, rateLimit.createAccountLimiter, userController.registerUser);
+router.post('/register', userValidationRules.register, userController.registerUser);
+
+// Verify email route
+router.post('/verify-email', userValidationRules.verifyToken, rateLimit.createAccountLimiter, userController.verifyEmail);
 
 // Login route using Passport's local strategy for authentication
 router.post('/login', userValidationRules.login, rateLimit.loginRateLimiter, userController.login);
+
+// Forgot password route
+router.post('/forgot-password', userValidationRules.forgotPassword, rateLimit.forgotPasswordLimiter, userController.forgotPassword);
+
+// Verify password reset token route
+router.post('/verify-reset-password', userValidationRules.verifyToken, rateLimit.forgotPasswordLimiter, userController.verifyResetPasswordCode);
+
+// Forgot password route
+router.post('/reset-password', userValidationRules.resetPassword, rateLimit.forgotPasswordLimiter, userController.resetPassword);
 
 // Redirect to Google for authentication
 router.get('/auth/google',
@@ -37,6 +50,12 @@ router.get('/auth/google/callback',
 router.use(rateLimit.generalLimiter, authMiddleware.authenticateJwt);
 
 // Route group with authentication middleware
+
+// onboarding routes
+router.get('/onboarding/all-leagues', onboardingController.getAllLeagues);
+router.get('/onboarding/teams-in-league/:leagueId', onboardingController.getTeamsInLeague);
+router.get('/onboarding/players-in-team/:teamId', onboardingController.getPlayersInTeam);
+
 // Dashboard route
 router.get('/dashboard', userController.dashboard);
 router.get('/profile', userController.profile);

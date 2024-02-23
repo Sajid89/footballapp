@@ -20,21 +20,33 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    Phone: String,
-    Role: {
-        type: String,
-        enum: ['user', 'vendor', 'admin'],
-        default: 'user'
+    VerificationToken: String,
+    EmailVerified: {
+        type: Boolean,
+        default: false
     },
-    SocialMediaAuth: {
-        Provider: String,
-        SocialMediaID: String,
-        AuthToken: String
+    IsSocial: {
+        type: Boolean,
+        default: false
+    },
+    Social: {
+        google: {
+            id: { type: String, default: null },
+            token: { type: String, default: null }
+        },
+        facebook: {
+            id: { type: String, default: null },
+            token: { type: String, default: null }
+        }
     },
     PasswordResetToken: String,
     PasswordResetExpires: Date,
     ProfilePicture: String,
     CreatedDate: {
+        type: Date,
+        default: Date.now
+    },
+    UpdatedDate: {
         type: Date,
         default: Date.now
     },
