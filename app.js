@@ -13,7 +13,8 @@ app.use(passport.initialize());
 const userRoutes = require('./routes/users');
 
 const mongoose = require('mongoose');
-const dbURL = 'mongodb://127.0.0.1:27017/FootBallApp';
+//const dbURL = 'mongodb://127.0.0.1:27017/FootBallApp';
+const dbURL = 'mongodb+srv://sajid89sahal@gmail.com:' + encodeURIComponent('Sajid@1989') + '@cluster0.za1d0lw.mongodb.net/FootBallApp';
 
 app.use(express.json()); // Make sure it comes back as json
 app.use('/api/users', userRoutes); // Prefix all routes defined in `userRoutes` with `/api/users`
