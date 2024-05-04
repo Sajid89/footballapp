@@ -14,13 +14,18 @@ const userRoutes = require('./routes/users');
 
 const mongoose = require('mongoose');
 //const dbURL = 'mongodb://127.0.0.1:27017/FootBallApp';
-const dbURL = 'mongodb+srv://sajid89sahal@gmail.com:' + encodeURIComponent('Sajid@1989') + '@cluster0.za1d0lw.mongodb.net/FootBallApp';
+const dbURL = `mongodb+srv://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_CLUSTER}.za1d0lw.mongodb.net/FootBallApp`;
 
 app.use(express.json()); // Make sure it comes back as json
 app.use('/api/users', userRoutes); // Prefix all routes defined in `userRoutes` with `/api/users`
 
 // Connect to MongoDB
-mongoose.connect(dbURL);
+mongoose.connect(dbURL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: false
+});
 
 // Connection event listeners
 const db = mongoose.connection;
